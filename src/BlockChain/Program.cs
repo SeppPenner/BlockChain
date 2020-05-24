@@ -76,8 +76,6 @@ namespace BlockChain
                 Console.WriteLine($"Current user is {name}.");
             }
 
-            WriteOptions();
-
             var selection = 0;
             while (selection != 4)
             {

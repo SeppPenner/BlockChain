@@ -153,33 +153,5 @@ namespace BlockChain
 
             return true;
         }
-
-        /// <summary>
-        /// Gets the balance.
-        /// </summary>
-        /// <param name="address">The address.</param>
-        /// <returns>The total balance.</returns>
-        public long GetBalance(string address)
-        {
-            long balance = 0;
-
-            foreach (var block in this.Blocks)
-            {
-                foreach (var transaction in block.Transactions)
-                {
-                    if (transaction.FromAddress == address)
-                    {
-                        balance -= transaction.Amount;
-                    }
-
-                    if (transaction.ToAddress == address)
-                    {
-                        balance += transaction.Amount;
-                    }
-                }
-            }
-
-            return balance;
-        }
     }
 }

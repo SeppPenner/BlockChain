@@ -11,7 +11,6 @@ namespace BlockChain
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using Newtonsoft.Json;
 
@@ -70,22 +69,6 @@ namespace BlockChain
         }
 
         /// <summary>
-        /// Sends new data to the URL.
-        /// </summary>
-        /// <param name="url">The URL.</param>
-        /// <param name="data">The data.</param>
-        public void Send(string url, string data)
-        {
-            foreach (var (key, value) in this.webSocketDictionary)
-            {
-                if (key == url)
-                {
-                    value.Send(data);
-                }
-            }
-        }
-
-        /// <summary>
         /// Broadcasts the data.
         /// </summary>
         /// <param name="data">The data.</param>
@@ -95,15 +78,6 @@ namespace BlockChain
             {
                 item.Value.Send(data);
             }
-        }
-
-        /// <summary>
-        /// Gets the servers.
-        /// </summary>
-        /// <returns>A <see cref="List{T}"/> of servers.</returns>
-        public IList<string> GetServers()
-        {
-            return this.webSocketDictionary.Select(item => item.Key).ToList();
         }
 
         /// <summary>

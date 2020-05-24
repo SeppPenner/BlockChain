@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BlockChain": {
+      "commandName": "Project",
+      "commandLineArgs": "6001 Test"
+    }
+  }
+}

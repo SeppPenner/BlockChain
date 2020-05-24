@@ -47,7 +47,7 @@ namespace BlockChain
         /// </summary>
         public void Start()
         {
-            this.webSocketServer = new WebSocketServer($"{WebSocketAddress}:{Program.Port}.");
+            this.webSocketServer = new WebSocketServer($"{WebSocketAddress}:{Program.Port}");
             this.webSocketServer.AddWebSocketService<P2PServer>($"/{WebSocketUrl}");
             this.webSocketServer.Start();
             Console.WriteLine($"Started server at {WebSocketAddress}:{Program.Port}.");
