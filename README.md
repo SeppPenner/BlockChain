@@ -10,6 +10,13 @@ BlockChain is a simple block chain in written in C#. The assembly was written an
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://raw.githubusercontent.com/SeppPenner/BlockChain/master/License.txt)
 [![Known Vulnerabilities](https://snyk.io/test/github/SeppPenner/BlockChain/badge.svg)](https://snyk.io/test/github/SeppPenner/BlockChain)
 
+# Starting up two nodes
+
+```cmd
+dotnet BlockChain.dll 6001 Test1
+dotnet BlockChain.dll 6002 Test2
+```
+
 # Further links
 
 * https://www.c-sharpcorner.com/article/blockchain-basics-building-a-blockchain-in-net-core/
