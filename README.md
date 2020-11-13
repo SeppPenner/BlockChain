@@ -1,7 +1,7 @@
 BlockChain
 ====================================
 
-BlockChain is a simple block chain in written in C#. The assembly was written and tested in .Net Core 3.1.
+BlockChain is a simple block chain in written in C#. The assembly was written and tested in .Net 5.0.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/flwy7y8jjy8a62md?svg=true)](https://ci.appveyor.com/project/SeppPenner/blockchain)
 [![GitHub issues](https://img.shields.io/github/issues/SeppPenner/BlockChain.svg)](https://github.com/SeppPenner/BlockChain/issues)
@@ -27,4 +27,4 @@ dotnet BlockChain.dll 6002 Test2
 Change history
 --------------
 
-* **Version 1.0.0.0 (2020-05-24)** : 1.0 release.
+See the [Changelog](https://github.com/SeppPenner/BlockChain/blob/master/Changelog.md).
