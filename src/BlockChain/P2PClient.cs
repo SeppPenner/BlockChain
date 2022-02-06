@@ -46,7 +46,12 @@ namespace BlockChain
                 }
                 else
                 {
-                    var newChain = JsonConvert.DeserializeObject<BlockChain>(e.Data);
+                    var newChain = JsonConvert.DeserializeObject<BlockChain?>(e.Data);
+
+                    if (newChain is null)
+                    {
+                        return;
+                    }
 
                     if (!newChain.IsValid() || newChain.Blocks.Count <= Program.BlockChain.Blocks.Count)
                     {

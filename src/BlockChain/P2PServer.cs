@@ -40,7 +40,7 @@ namespace BlockChain
         /// <summary>
         /// The WebSocket server.
         /// </summary>
-        private WebSocketServer webSocketServer;
+        private WebSocketServer webSocketServer = new();
 
         /// <summary>
         /// Starts the P2P server.
@@ -66,7 +66,12 @@ namespace BlockChain
             }
             else
             {
-                var newChain = JsonConvert.DeserializeObject<BlockChain>(e.Data);
+                var newChain = JsonConvert.DeserializeObject<BlockChain?>(e.Data);
+
+                if (newChain is null)
+                {
+                    return;
+                }
 
                 if (newChain.IsValid() && newChain.Blocks.Count > Program.BlockChain.Blocks.Count)
                 {

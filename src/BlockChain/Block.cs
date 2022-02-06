@@ -34,17 +34,17 @@ namespace BlockChain
         /// <summary>
         /// Gets or sets the previous hash.
         /// </summary>
-        public string PreviousHash { get; set; }
+        public string? PreviousHash { get; set; }
 
         /// <summary>
         /// Gets or sets the hash.
         /// </summary>
-        public string Hash { get; set; }
+        public string Hash { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the transactions.
         /// </summary>
-        public IList<Transaction> Transactions { get; set; }
+        public IList<Transaction> Transactions { get; set; } = new List<Transaction>();
 
         /// <summary>
         /// Gets or sets the nonce.

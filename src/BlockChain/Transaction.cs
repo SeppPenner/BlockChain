@@ -17,12 +17,12 @@ namespace BlockChain
         /// <summary>
         /// Gets or sets the from address.
         /// </summary>
-        public string FromAddress { get; set; }
+        public string? FromAddress { get; set; }
 
         /// <summary>
         /// Gets or sets the to address.
         /// </summary>
-        public string ToAddress { get; set; }
+        public string? ToAddress { get; set; }
 
         /// <summary>
         /// Gets or sets the amount.

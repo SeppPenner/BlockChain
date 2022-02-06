@@ -30,7 +30,7 @@ namespace BlockChain
         /// <summary>
         /// Gets or sets the blocks.
         /// </summary>
-        public IList<Block> Blocks { get;  set; }
+        public IList<Block> Blocks { get; set; } = new List<Block>();
 
         /// <summary>
         /// Gets or sets the difficulty.
