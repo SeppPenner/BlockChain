@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="P2PServer.cs" company="Hämmer Electronics">
 //   Copyright (c) 2020 All rights reserved.
 // </copyright>
@@ -7,90 +7,81 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace BlockChain
+namespace BlockChain;
+
+/// <summary>
+/// A class representing the P2P server.
+/// </summary>
+public class P2PServer : WebSocketBehavior
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Newtonsoft.Json;
-
-    using WebSocketSharp;
-    using WebSocketSharp.Server;
+    /// <summary>
+    /// The WebSocket URL.
+    /// </summary>
+    private const string WebSocketUrl = "BlockChain";
 
     /// <summary>
-    /// A class representing the P2P server.
+    /// The WebSocket address.
     /// </summary>
-    public class P2PServer : WebSocketBehavior
+    private const string WebSocketAddress = "ws://127.0.0.1";
+
+    /// <summary>
+    /// A value indicating whether the chain is synced or not.
+    /// </summary>
+    private bool chainSynched;
+
+    /// <summary>
+    /// The WebSocket server.
+    /// </summary>
+    private WebSocketServer webSocketServer = new();
+
+    /// <summary>
+    /// Starts the P2P server.
+    /// </summary>
+    public void Start()
     {
-        /// <summary>
-        /// The WebSocket URL.
-        /// </summary>
-        private const string WebSocketUrl = "BlockChain";
+        this.webSocketServer = new WebSocketServer($"{WebSocketAddress}:{Program.Port}");
+        this.webSocketServer.AddWebSocketService<P2PServer>($"/{WebSocketUrl}");
+        this.webSocketServer.Start();
+        Console.WriteLine($"Started server at {WebSocketAddress}:{Program.Port}.");
+    }
 
-        /// <summary>
-        /// The WebSocket address.
-        /// </summary>
-        private const string WebSocketAddress = "ws://127.0.0.1";
-
-        /// <summary>
-        /// A value indicating whether the chain is synced or not.
-        /// </summary>
-        private bool chainSynched;
-
-        /// <summary>
-        /// The WebSocket server.
-        /// </summary>
-        private WebSocketServer webSocketServer = new();
-
-        /// <summary>
-        /// Starts the P2P server.
-        /// </summary>
-        public void Start()
+    /// <summary>
+    /// Handles the message event.
+    /// </summary>
+    /// <param name="e">The message event args.</param>
+    protected override void OnMessage(MessageEventArgs e)
+    {
+        if (e.Data == "Hi server.")
         {
-            this.webSocketServer = new WebSocketServer($"{WebSocketAddress}:{Program.Port}");
-            this.webSocketServer.AddWebSocketService<P2PServer>($"/{WebSocketUrl}");
-            this.webSocketServer.Start();
-            Console.WriteLine($"Started server at {WebSocketAddress}:{Program.Port}.");
+            Console.WriteLine(e.Data);
+            this.Send("Hi client.");
         }
-
-        /// <summary>
-        /// Handles the message event.
-        /// </summary>
-        /// <param name="e">The message event args.</param>
-        protected override void OnMessage(MessageEventArgs e)
+        else
         {
-            if (e.Data == "Hi server.")
+            var newChain = JsonConvert.DeserializeObject<BlockChain?>(e.Data);
+
+            if (newChain is null)
             {
-                Console.WriteLine(e.Data);
-                this.Send("Hi client.");
+                return;
             }
-            else
+
+            if (newChain.IsValid() && newChain.Blocks.Count > Program.BlockChain.Blocks.Count)
             {
-                var newChain = JsonConvert.DeserializeObject<BlockChain?>(e.Data);
+                var newTransactions = new List<Transaction>();
+                newTransactions.AddRange(newChain.PendingTransactions);
+                newTransactions.AddRange(Program.BlockChain.PendingTransactions);
 
-                if (newChain is null)
-                {
-                    return;
-                }
-
-                if (newChain.IsValid() && newChain.Blocks.Count > Program.BlockChain.Blocks.Count)
-                {
-                    var newTransactions = new List<Transaction>();
-                    newTransactions.AddRange(newChain.PendingTransactions);
-                    newTransactions.AddRange(Program.BlockChain.PendingTransactions);
-
-                    newChain.PendingTransactions = newTransactions;
-                    Program.BlockChain = newChain;
-                }
-
-                if (this.chainSynched)
-                {
-                    return;
-                }
-
-                this.Send(JsonConvert.SerializeObject(Program.BlockChain));
-                this.chainSynched = true;
+                newChain.PendingTransactions = newTransactions;
+                Program.BlockChain = newChain;
             }
+
+            if (this.chainSynched)
+            {
+                return;
+            }
+
+            this.Send(JsonConvert.SerializeObject(Program.BlockChain));
+            this.chainSynched = true;
         }
     }
 }
